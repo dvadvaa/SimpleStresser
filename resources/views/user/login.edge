@@ -1,0 +1,51 @@
+@layout('main')
+
+@section('content')
+<br>
+<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<div class="brand_logo_container">
+
+					</div>
+                </div>
+                <h1 class="display-4 text-center">Sign in</h1><br>
+				<div class="d-flex justify-content-center form_container">
+                    <form action="/signin" method="POST">
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="text" name="email" class="form-control input_user" placeholder="Email" value="{{ old('email', '') }}">
+                        </div>  
+                        {{ elIf('<text>$self</text>', getErrorFor('email'), hasErrorFor('email')) }} 
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+                            <input type="password" name="password" class="form-control input_pass" placeholder="Password" value="{{ old('password', '') }}">
+                        </div>
+                        {{ elIf('<span>$self</span>', getErrorFor('password'), hasErrorFor('password')) }}  
+						<div class="form-group">
+							<div class="custom-control custom-checkbox">
+                                {{ csrfField() }}
+							</div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                                <button type="submit" class="btn login_btn">Login</button>
+                            </div>
+					</form>
+				</div>
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						Don't have an account? <a href="#" class="ml-2">Sign Up</a>
+					</div>
+					<div class="d-flex justify-content-center links">
+						<a href="#">Forgot your password?</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+@endsection

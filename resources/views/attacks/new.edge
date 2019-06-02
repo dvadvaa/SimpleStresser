@@ -1,0 +1,224 @@
+@layout('main')
+@section('content')
+@if(auth.user.username)
+    <div class="modal fade" id="ModalProfile" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ auth.user.username }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+               <ul class="list-group mb-3">
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                       <div>
+                         <h6 class="my-0">Username</h6>
+                       </div>
+                     <span class="text-muted">{{ auth.user.username }}</span>
+                     </li>
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                       <div>
+                         <h6 class="my-0">Email</h6>
+                       </div>
+                       <span class="text-muted">{{ auth.user.email }}</span>
+                     </li>
+                     @if(auth.user.plan > 0)
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                       <div>
+                         <h6 class="my-0">Membership</h6>
+                       </div>
+                     <span class="text-muted">{{ plan[0].userPlan.name }}</span>
+                     </li>
+                     @else
+                     <li class="list-group-item d-flex justify-content-between lh-condensed text-muted">
+                        <div>
+                            <h6 class="my-0">Membership</h6>
+                        </div>
+                           <span class="text-muted">None</span>
+                     </li>
+                     @endif
+                     @if(auth.user.expire)
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                           <h6 class="my-0">Membership Expiration</h6>
+                        </div>
+                        <span class="text-muted">{{ auth.user.expire }}</span>
+                     </li>
+                     @else
+                     <li class="list-group-item d-flex justify-content-between lh-condensed text-muted">
+                           <div>
+                              <h6 class="my-0">Membership Expiration</h6>
+                           </div>
+                           <span class="text-muted">None</span>
+                        </li>
+                     @endif
+                     @if(auth.user.plan > 0)
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                           <div>
+                              <h6 class="my-0">Boot Time</h6>
+                           </div>
+                           <span class="text-muted">{{ plan[0].userPlan.time }} sec.</span>
+                     </li>
+                     @else
+                     <li class="list-group-item d-flex justify-content-between lh-condensed text-muted">
+                           <div>
+                              <h6 class="my-0">Boot Time</h6>
+                           </div>
+                           <span class="text-muted">None</span>
+                     </li>
+                     @endif
+                     @if(auth.user.plan > 0)
+                     <li class="list-group-item d-flex justify-content-between lh-condensed">
+                           <div>
+                              <h6 class="my-0">Current Boots</h6>
+                           </div>
+                           <span class="text-muted">{{ plan[0].userPlan.attacks }} attacks</span>
+                     </li>
+                   </ul>
+                   @else
+                   <li class="list-group-item d-flex justify-content-between lh-condensed text-muted">
+                        <div>
+                           <h6 class="my-0">Current Boots</h6>
+                        </div>
+                        <span class="text-muted">None</span>
+                  </li>
+                </ul>
+                   @endif
+          </div>
+          <div class="modal-footer">
+              <a class="btn btn-primary" href="/logout" role="button">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+@endif
+<br>
+<div class="container h-100">
+   <div class="d-flex justify-content-center h-100">
+      <div class="user_card">
+         <div class="d-flex justify-content-center">
+         </div>
+         <h1 class="display-4 text-center">Dashboard</h1>
+         <br>
+         @if(old('good_notification'))
+         <div class="alert alert-success">
+             {{old('good_notification')}}
+         </div>
+         @elseif(old('bad_notification'))
+         <div class="alert alert-danger">
+            {{old('bad_notification')}}
+        </div>
+         @endif
+         <div class="d-flex justify-content-center form_container">
+            @if(auth.user.plan > 0)
+            <form action="/attack/new" method="POST">
+               <div class="form-row">
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Host" name="host" value="{{ old('host', '') }}" >
+                     {{ elIf('<span>$self</span>', getErrorFor('host'), hasErrorFor('host')) }} 
+                  </div>
+                  <h3>:</h3>
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Port" name="port" value="{{ old('port', '') }}" >
+                     {{ elIf('<span>$self</span>', getErrorFor('port'), hasErrorFor('port')) }} 
+                  </div>
+               </div>
+               <div class="form-group">
+                  <hr>
+                  @if(userplan[0].userPlan.time)
+                  <input type="text" class="form-control" name="time" placeholder="Time | max: {{ userplan[0].userPlan.time }} sec." value="{{ old('time', '') }}" >
+                  {{ elIf('<span>$self</span>', getErrorFor('time'), hasErrorFor('time')) }} 
+                  @else
+                  <input type="text" class="form-control" name="time" placeholder="Time" value="{{ old('time', '') }}" >
+                  {{ elIf('<span>$self</span>', getErrorFor('time'), hasErrorFor('time')) }} 
+                  @endif
+               </div>
+               <div class="form-group">
+                  <select class="form-control" name="method">
+                     <option disabled>L4 Methods</option>
+                     @each(method in methodsL4)
+                     <option value="{{ method.id }}">{{ method.label }}</option>
+                     @endeach
+                     <option disabled>L7 Methods</option>
+                     @each(method in methodsL7)
+                     <option value="{{ method.id }}">{{ method.label }}</option>
+                     @endeach
+                  </select>
+                  {{ elIf('<span>$self</span>', getErrorFor('method'), hasErrorFor('method')) }} 
+               </div>
+               <div class="form-group">
+                  {{ csrfField() }}
+                  <button type="submit" class="btn btn-primary float-right">Start</button>
+               </div>
+            </form>
+            @else
+            <form action="/" method="POST">
+               <div class="form-row">
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Host" name="host" value="{{ old('host', '') }}" disabled>
+                     {{ elIf('<span>$self</span>', getErrorFor('host'), hasErrorFor('host')) }} 
+                  </div>
+                  <h3>:</h3>
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Port" name="port" value="{{ old('port', '') }}" disabled>
+                     {{ elIf('<span>$self</span>', getErrorFor('port'), hasErrorFor('port')) }} 
+                  </div>
+               </div>
+               <div class="form-group">
+                  <hr>
+                  <input type="text" class="form-control" placeholder="Time" name="time" value="{{ old('time', '') }}" disabled>
+                  {{ elIf('<span>$self</span>', getErrorFor('time'), hasErrorFor('time')) }} 
+               </div>
+               <div class="form-group">
+                  <select class="form-control" value="11" placeholder="Methods" name="method" disabled>
+                  </select>
+                  {{ elIf('<span>$self</span>', getErrorFor('method'), hasErrorFor('method')) }} 
+               </div>
+               <div class="form-group">
+                  {{ csrfField() }}
+                  <span id="button" class="d-inline-block float-right" tabindex="0" data-toggle="tooltip" title="You do not have a plan.">
+                  <button class="btn btn-primary float-right" style="pointer-events: none;" type="button" disabled>Start</button>
+                  </span>
+               </div>
+            </form>
+            @endif
+         </div>
+         @if(plan[0].userPlan.time)
+         <br>
+         <table class="table table-striped">
+               <thead>
+                 <tr>
+                   <th scope="col">Type</th>
+                   <th scope="col">Target</th>
+                   <th scope="col">Method</th>
+                   <th scope="col">Time</th>
+                   <th scope="col">Action</th>
+                 </tr>
+               </thead>
+               <tbody>
+           @each(attack in attacks)
+           @if((attack.started_at + attack.time) >= date)
+           <form action="/attack/stop" method="POST">
+           <input type="hidden" name="attackID" value="{{ attack.id}}">
+           {{ csrfField() }}
+           <tr>
+               <th scope="row">L{{attack.methodInfo.type}}</th>
+               <td>{{ attack.target }}:{{ attack.port }}</td>
+               <td>{{attack.methodInfo.label}}</td>
+               <td>{{ attack.time }} sec.</td>
+               <td><button type="submit" class="btn btn-danger btn-sm float-right">X</button></td>
+             </tr>
+           </form>
+            @endif
+          @endeach
+         </tbody></table> 
+          @endif
+      </div>
+   </div>
+</div>
+<script>
+   $('#button').tooltip();
+</script>
+@endsection
