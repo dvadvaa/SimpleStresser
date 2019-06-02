@@ -1,6 +1,7 @@
 # SimpleStresser on NodeJS + AdonisJS
 
 This is the fullstack stresser for AdonisJs.
+For the database is used MySQL.
 
 1. Authorization
 2. Registration
