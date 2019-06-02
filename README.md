@@ -1,15 +1,13 @@
-# Adonis fullstack application
+# SimpleStresser on NodeJS + AdonisJS
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+This is the fullstack stresser for AdonisJs.
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
+1. Authorization
+2. Registration
+3. Attack Hub
+4. UserCP
+5. Purchase
+
 
 ## Setup
 
@@ -18,9 +16,10 @@ Use the adonis command to install the blueprint
 ```bash
 adonis new yardstick
 ```
+Change the settings file `.env`.
 
 or manually clone the repo and then run `npm install`.
-
+and
 
 ### Migrations
 
