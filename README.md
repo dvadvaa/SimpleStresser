@@ -19,7 +19,6 @@ adonis new yardstick
 Change the settings file `.env`.
 
 or manually clone the repo and then run `npm install`.
-and
 
 ### Migrations
 
