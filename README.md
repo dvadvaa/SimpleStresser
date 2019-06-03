@@ -141,4 +141,4 @@ sudo systemctl reload nginx
 
 **If you have any errors or questions, contact me:**
 - VK: [vk.com/pri2che](https://vk.com/pri2che)
-- Telegram:[t.me/sup_ban](https://t.me/sup_ban)
+- Telegram: [t.me/sup_ban](https://t.me/sup_ban)
