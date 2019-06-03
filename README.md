@@ -1,7 +1,8 @@
-# SimpleStresser on NodeJS + AdonisJS
+# SimpleStresser
+Programming language: **NodeJs**.
+Framework: **AdonisJs**.
+Database: **MySQL**.
 
-This is the fullstack stresser for AdonisJs.
-For the database is used MySQL.
 
 - [x] Authorization
 - [x] Registration
