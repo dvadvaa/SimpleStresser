@@ -14,8 +14,6 @@ For the database is used MySQL.
 ```bash
 npm i -g @adonisjs/cli
 
-npm install mysql
-
 cd SimpleStresser
 
 npm install
