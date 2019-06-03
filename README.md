@@ -11,12 +11,16 @@ For the database is used MySQL.
 
 
 ## Setup
-
-Use the adonis command to install the blueprint
-
 ```bash
-adonis new yardstick
+npm i -g @adonisjs/cli
+
+npm install mysql
+
+cd SimpleStresser
+
+npm install
 ```
+
 Change the settings file `.env`.
 
 or manually clone the repo and then run `npm install`.
